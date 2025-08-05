@@ -26,9 +26,9 @@ restaurants_data = [
 ]
 
 orders_data = [
-    {"id": 1, "restaurant_id": 1, "customer_name": "John Doe", "status": "pending", "total": 25.99, "items": ["Butter Chicken", "Naan"]},
-    {"id": 2, "restaurant_id": 1, "customer_name": "Jane Smith", "status": "completed", "total": 18.50, "items": ["Samosa", "Tea"]},
-    {"id": 3, "restaurant_id": 2, "customer_name": "Mike Johnson", "status": "preparing", "total": 45.00, "items": ["Fish & Chips", "Salad"]}
+    {"id": 1, "restaurant_id": 1, "customer_name": "John Doe", "status": "pending", "total": 25.99, "items": ["Butter Chicken", "Naan"], "created_at": "2024-08-05T10:30:00Z"},
+    {"id": 2, "restaurant_id": 1, "customer_name": "Jane Smith", "status": "completed", "total": 18.50, "items": ["Samosa", "Tea"], "created_at": "2024-08-05T09:15:00Z"},
+    {"id": 3, "restaurant_id": 2, "customer_name": "Mike Johnson", "status": "preparing", "total": 45.00, "items": ["Fish & Chips", "Salad"], "created_at": "2024-08-05T11:45:00Z"}
 ]
 
 menu_items_data = [

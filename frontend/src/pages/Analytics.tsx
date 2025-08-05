@@ -19,7 +19,7 @@ import {
 import { Line, Bar, Doughnut } from 'react-chartjs-2'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
-import { mockDataAPI } from '../lib/api'
+import { analyticsAPI } from '../lib/api'
 import { formatCurrency } from '../lib/utils'
 
 // Register Chart.js components
@@ -52,7 +52,7 @@ export function Analytics() {
   const loadAnalyticsData = async () => {
     try {
       setLoading(true)
-      const data = await mockDataAPI.getAnalytics()
+      const data = await analyticsAPI.getSalesAnalytics(1) // Using restaurant ID 1 for demo
       setAnalytics(data)
     } catch (error) {
       console.error('Error loading analytics data:', error)

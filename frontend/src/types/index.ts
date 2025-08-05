@@ -45,18 +45,20 @@ export interface Order {
   id: number;
   restaurant_id: number;
   customer_name: string;
-  customer_phone: string;
+  customer_phone?: string;
   customer_email?: string;
   delivery_address?: string;
-  order_type: 'delivery' | 'pickup' | 'dine-in';
+  order_type?: 'delivery' | 'pickup' | 'dine-in';
   status: 'pending' | 'confirmed' | 'preparing' | 'ready' | 'delivered' | 'cancelled';
-  total_amount: number;
-  payment_status: 'pending' | 'paid' | 'refunded';
+  total?: number; // Backend sends 'total'
+  total_amount?: number; // Fallback for different API versions
+  items?: string[]; // Backend sends array of item names
+  payment_status?: 'pending' | 'paid' | 'refunded';
   special_instructions?: string;
   estimated_delivery_time?: string;
   actual_delivery_time?: string;
-  created_at: string;
-  updated_at: string;
+  created_at?: string; // May not be present in backend response
+  updated_at?: string;
   order_items?: OrderItem[];
   restaurant?: Restaurant;
 }

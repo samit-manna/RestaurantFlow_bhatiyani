@@ -16,7 +16,7 @@ import {
   Clock,
   Search
 } from 'lucide-react'
-import { mockDataAPI } from '../lib/api'
+import { orderAPI, restaurantAPI } from '../lib/api'
 import { formatCurrency, formatDate, getStatusColor, getTimeAgo } from '../lib/utils'
 import { Order, Restaurant } from '../types'
 
@@ -47,8 +47,8 @@ export function Orders() {
     try {
       setLoading(true)
       const [ordersData, restaurantsData] = await Promise.all([
-        mockDataAPI.getOrders(),
-        mockDataAPI.getRestaurants()
+        orderAPI.getAll(),
+        restaurantAPI.getAll()
       ])
       setOrders(ordersData)
       setRestaurants(restaurantsData)
@@ -75,7 +75,7 @@ export function Orders() {
       filtered = filtered.filter(order =>
         order.customer_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         order.id.toString().includes(searchTerm) ||
-        order.customer_phone.includes(searchTerm)
+        (order.customer_phone && order.customer_phone.includes(searchTerm))
       )
     }
 
@@ -233,7 +233,7 @@ export function Orders() {
                         <div className="flex items-center space-x-2">
                           <span className="font-medium">Total:</span>
                           <span className="text-lg font-semibold text-green-600">
-                            {formatCurrency(order.total_amount)}
+                            {formatCurrency(order.total || order.total_amount || 0)}
                           </span>
                         </div>
                       </div>

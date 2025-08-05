@@ -19,7 +19,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
-import { mockDataAPI } from '../lib/api'
+import { orderAPI } from '../lib/api'
 import { Order } from '../types'
 import { getStatusColor, formatCurrency } from '../lib/utils'
 
@@ -78,7 +78,7 @@ export function OrderFlow() {
   const loadOrderData = async () => {
     try {
       setLoading(true)
-      const ordersData = await mockDataAPI.getOrders()
+      const ordersData = await orderAPI.getAll()
       setOrders(ordersData)
       createFlowDiagram(ordersData)
     } catch (error) {
@@ -193,7 +193,7 @@ export function OrderFlow() {
   const completedCount = orders.filter(o => o.status === 'delivered').length
   const totalRevenue = orders
     .filter(o => o.status === 'delivered')
-    .reduce((sum, order) => sum + order.total_amount, 0)
+    .reduce((sum, order) => sum + (order.total || order.total_amount || 0), 0)
 
   return (
     <div className="space-y-6">

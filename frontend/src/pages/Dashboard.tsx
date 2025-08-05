@@ -15,7 +15,7 @@ import {
   Store,
   Eye
 } from 'lucide-react'
-import { mockDataAPI } from '../lib/api'
+import { restaurantAPI, orderAPI, analyticsAPI } from '../lib/api'
 import { formatCurrency, formatDate, getStatusColor } from '../lib/utils'
 import { Order, Restaurant, DailyRevenue } from '../types'
 
@@ -39,9 +39,9 @@ export function Dashboard() {
     try {
       setLoading(true)
       const [ordersData, restaurantsData, analyticsData] = await Promise.all([
-        mockDataAPI.getOrders(),
-        mockDataAPI.getRestaurants(),
-        mockDataAPI.getAnalytics()
+        orderAPI.getAll(),
+        restaurantAPI.getAll(),
+        analyticsAPI.getDashboardData(1) // Using restaurant ID 1 for demo
       ])
       
       setOrders(ordersData)
@@ -64,13 +64,15 @@ export function Dashboard() {
   ).length
 
   const todayOrders = orders.filter(order => {
+    if (!order.created_at) return false
     const orderDate = new Date(order.created_at).toDateString()
     const today = new Date().toDateString()
     return orderDate === today
   }).length
 
   const recentOrders = orders
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .filter(order => order.created_at) // Only include orders with created_at
+    .sort((a, b) => new Date(b.created_at!).getTime() - new Date(a.created_at!).getTime())
     .slice(0, 5)
 
   if (loading) {
@@ -164,10 +166,10 @@ export function Dashboard() {
                       </Badge>
                     </div>
                     <p className="text-sm text-gray-600">{order.customer_name}</p>
-                    <p className="text-xs text-gray-500">{formatDate(order.created_at)}</p>
+                    <p className="text-xs text-gray-500">{formatDate(order.created_at || new Date().toISOString())}</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium">{formatCurrency(order.total_amount)}</p>
+                    <p className="font-medium">{formatCurrency(order.total || order.total_amount || 0)}</p>
                     <Button variant="ghost" size="sm">
                       <Eye className="h-4 w-4 mr-1" />
                       View

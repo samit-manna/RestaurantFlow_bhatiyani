@@ -27,8 +27,18 @@ export function formatCurrency(amount: number): string {
 /**
  * Formats dates for display in various formats.
  */
-export function formatDate(date: string | Date, format: 'short' | 'long' | 'time' = 'short'): string {
+export function formatDate(date: string | Date | null | undefined, format: 'short' | 'long' | 'time' = 'short'): string {
+  // Handle null/undefined dates
+  if (!date) {
+    return 'N/A'
+  }
+  
   const dateObj = typeof date === 'string' ? new Date(date) : date
+  
+  // Check if the date is valid
+  if (isNaN(dateObj.getTime())) {
+    return 'Invalid Date'
+  }
   
   switch (format) {
     case 'long':
@@ -57,9 +67,20 @@ export function formatDate(date: string | Date, format: 'short' | 'long' | 'time
 /**
  * Calculates time difference from now.
  */
-export function getTimeAgo(date: string | Date): string {
+export function getTimeAgo(date: string | Date | null | undefined): string {
+  // Handle null/undefined dates
+  if (!date) {
+    return 'N/A'
+  }
+  
   const now = new Date()
   const dateObj = typeof date === 'string' ? new Date(date) : date
+  
+  // Check if the date is valid
+  if (isNaN(dateObj.getTime())) {
+    return 'Invalid Date'
+  }
+  
   const diffInMinutes = Math.floor((now.getTime() - dateObj.getTime()) / (1000 * 60))
   
   if (diffInMinutes < 1) return 'Just now'

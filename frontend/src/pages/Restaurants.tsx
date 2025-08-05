@@ -16,7 +16,7 @@ import {
   Edit,
   Eye
 } from 'lucide-react'
-import { mockDataAPI } from '../lib/api'
+import { restaurantAPI } from '../lib/api'
 import { Restaurant } from '../types'
 
 /**
@@ -36,7 +36,7 @@ export function Restaurants() {
   const loadRestaurants = async () => {
     try {
       setLoading(true)
-      const data = await mockDataAPI.getRestaurants()
+      const data = await restaurantAPI.getAll()
       setRestaurants(data)
     } catch (error) {
       console.error('Error loading restaurants:', error)
